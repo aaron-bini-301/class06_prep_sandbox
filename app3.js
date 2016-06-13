@@ -1,23 +1,27 @@
 $(function () {
-  var person = {
-    name: 'Aaron',
-    hobby: 'Stamp Collecting',
-    describe: function () {
-      console.log('I am ' + this.name + ' and I like ' + this.hobby);
-    }
-  };
-  console.log(person);
+  function Car (name, number) {
+    this.name = name + number;
+    this.idNumber = number;
+  }
 
-  var personJSON = JSON.stringify(person);
-  console.log(personJSON);
-  person.describe();
+  var carCount = 10;
+  var carArray = [];
 
-  var newPersonJSON = personJSON.replace(/Aaron/, 'Jeremy');
-  console.log(newPersonJSON);
+  for (var i = 0; i < carCount; i++) {
+    carArray.push(new Car ('car', i));
+  }
+  console.log(JSON.stringify(carArray));
 
-  //newPerson does not have any methods, because JSON deals only in data, no functions
-  //so when the original person object was stringified to JSON, the method was not stringified
-  //so if you parse that JSON in order to create a new object, the method will not come with it
-  var newPerson = JSON.parse(newPersonJSON);
-  console.log(newPerson);
+  var returnedCarArray = [];
+
+  $.getJSON('myData.json', function (data) {
+    $.each(data, function(index, value) {
+      returnedCarArray.push(this);
+    });
+  })
+  .done(function(){
+    $.map(returnedCarArray, function (element, index) {
+      console.log(element.name + ' at index #' + element.idNumber);
+    });
+  });
 });
